@@ -8,11 +8,9 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @Setter
 public class CardDto implements Serializable {
-    @NonNull
     public String cardNumber;
     public int cvv2;
     public Date expireDate;

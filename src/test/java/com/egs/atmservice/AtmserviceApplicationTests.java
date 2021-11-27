@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 
+import javax.servlet.http.HttpSession;
 import java.net.URI;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -35,7 +36,10 @@ class AtmserviceApplicationTests {
     @Autowired
     MockMvc mockMvc;
 
-	private static final URI CARD_VARIFICATION_URI = URI.create("/api/v1/atm-service/cardVerification");
+    @Autowired
+    HttpSession httpSession;
+
+    private static final URI CARD_VARIFICATION_URI = URI.create("/api/v1/atm-service/cardVerification");
 	private static final URI CARD_PIN_VARIFICATION_URI  = URI.create("/api/v1/atm-service/cardPinVerification");
 	private static final URI BALANCE_MANAGEMENT_URI = URI.create("/api/v1/atm-service/balanceManagement");
     @Test
@@ -46,7 +50,8 @@ class AtmserviceApplicationTests {
 	public void notValidCardVerification() throws Exception {
 
 
-		CardDto cardDto = new CardDto("1235430001");
+		CardDto cardDto = new CardDto();
+        cardDto.setCardNumber("432432");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_VARIFICATION_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -56,7 +61,7 @@ class AtmserviceApplicationTests {
 
         MvcResult mvcResult = this.mockMvc.perform(req)
 				.andExpect(content().string(containsString(outputExpectedStr)))
-				.andExpect(status().isOk())
+				.andExpect(status().is(409))
 				.andDo(print())
 				.andReturn();
 
@@ -64,7 +69,8 @@ class AtmserviceApplicationTests {
 
 	@Test
 	public void validCardVerification() throws Exception {
-		CardDto cardDto = new CardDto("6280231451904303");
+		CardDto cardDto = new CardDto();
+		cardDto.setCardNumber("6280231451904303");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_VARIFICATION_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -82,7 +88,8 @@ class AtmserviceApplicationTests {
 
 	@Test
 	public void inActiveCardVerification() throws Exception {
-		CardDto cardDto = new CardDto("6280231451904304");
+		CardDto cardDto = new CardDto();
+		cardDto.setCardNumber("6280231451904304");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_VARIFICATION_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -92,7 +99,7 @@ class AtmserviceApplicationTests {
 
         MvcResult mvcResult = this.mockMvc.perform(req)
 				.andExpect(content().string(containsString(outputExpectedStr)))
-				.andExpect(status().isOk())
+				.andExpect(status().is(409))
 				.andDo(print())
 				.andReturn();
 
@@ -100,7 +107,8 @@ class AtmserviceApplicationTests {
 
 	@Test
 	public void expiredCardVerification() throws Exception {
-		CardDto cardDto = new CardDto("6280231451904305");
+		CardDto cardDto = new CardDto();
+		cardDto.setCardNumber("6280231451904305");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_VARIFICATION_URI)
 				.contentType(MediaType.APPLICATION_JSON) // for DTO
@@ -110,7 +118,7 @@ class AtmserviceApplicationTests {
 
         MvcResult mvcResult = this.mockMvc.perform(req)
 				.andExpect(content().string(containsString(outputExpectedStr)))
-				.andExpect(status().isOk())
+				.andExpect(status().is(409))
 				.andDo(print())
 				.andReturn();
 
@@ -118,7 +126,9 @@ class AtmserviceApplicationTests {
 
 	@Test
 	public void correctPinVerification() throws Exception {
-		CardDto cardDto = new CardDto("6280231451904303");
+        httpSession.setAttribute(ConstantsUtil.SessionKey.CARD_NUMBER, "6280231451904303");
+//        validCardVerification();
+		CardDto cardDto = new CardDto();
 		cardDto.setPin("1234");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_PIN_VARIFICATION_URI)
@@ -137,7 +147,8 @@ class AtmserviceApplicationTests {
 
 	@Test
 	public void incorrectPinVerification() throws Exception {
-		CardDto cardDto = new CardDto("6280231451904303");
+		CardDto cardDto = new CardDto();
+		cardDto.setCardNumber("6280231451904303");
 		cardDto.setPin("123");
 		String cardStr = mapToJson(cardDto);
 		RequestBuilder req = post(CARD_PIN_VARIFICATION_URI)

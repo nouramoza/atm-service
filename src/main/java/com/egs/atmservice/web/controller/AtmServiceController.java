@@ -29,7 +29,7 @@ public class AtmServiceController {
             produces = "Application/JSON", response = CardDto.class, httpMethod = "POST")
     public GenericRestResponse cardVerification(
             @ApiParam(value = "CardDto Number", required = true)
-            @RequestBody CardDto cardDto) {
+            @RequestBody CardDto cardDto) throws BadRequestAlertException {
         log.debug("REST request to Verify CardDto");
         return atmService.getCardVerification(cardDto) ;
     }

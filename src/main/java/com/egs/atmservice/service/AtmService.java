@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AtmService {
 
-    GenericRestResponse getCardVerification(CardDto cardDto);
+    GenericRestResponse getCardVerification(CardDto cardDto) throws BadRequestAlertException;
 
     GenericRestResponse getCardPinVerification(CardDto cardDto) throws BadRequestAlertException;
 

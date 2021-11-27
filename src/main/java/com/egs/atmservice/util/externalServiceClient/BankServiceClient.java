@@ -52,7 +52,9 @@ public class BankServiceClient {
     )
     public ResponseEntity<BankRestResponse> validateCardNumber(String cardNUmber) throws RestClientException {
         String requestPath = "/validateCardNumber";
-        return generateRequest(new CardDto(cardNUmber), requestPath);
+        CardDto cardDto = new CardDto();
+        cardDto.setCardNumber(cardNUmber);
+        return generateRequest(cardDto, requestPath);
     }
 
     @Retryable(
@@ -79,7 +81,7 @@ public class BankServiceClient {
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set(HttpHeaders.CONTENT_TYPE, "application/json;charset=UTF-8");
-            headers.set("Authorization", maxanAuthKey);
+//            headers.set("Authorization", maxanAuthKey);
             HttpEntity<Object> request = new HttpEntity<>(obj, headers);
             ResponseEntity<BankRestResponse> results = restTemplate.exchange(requestPath, HttpMethod.POST, request,
                     BankRestResponse.class);

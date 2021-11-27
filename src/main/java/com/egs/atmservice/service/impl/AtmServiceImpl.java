@@ -38,24 +38,21 @@ public class AtmServiceImpl implements AtmService {
      */
 
     @Override
-    public GenericRestResponse getCardVerification(CardDto cardDto) {
-
-        try {
-            ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
-                    bankServiceClient.validateCardNumber(cardDto.getCardNumber());
-            httpSession.setAttribute(ConstantsUtil.SessionKey.CARD_NUMBER, cardDto.getCardNumber());
-            return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(),
-                    bankRestResponseResponseEntity.getBody().getMessage());
-        } catch (Exception e) {
-            httpSession.setAttribute("cardNUmber", ConstantsUtil.SessionKey.ERROR);
+    public GenericRestResponse getCardVerification(CardDto cardDto) throws BadRequestAlertException {
+        ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
+                bankServiceClient.validateCardNumber(cardDto.getCardNumber());
+        httpSession.setAttribute(ConstantsUtil.SessionKey.CARD_NUMBER, cardDto.getCardNumber());
+        if (bankRestResponseResponseEntity.getBody().getStatus() == BankRestResponse.STATUS.FAILURE) {
+            throw new BadRequestAlertException(bankRestResponseResponseEntity.getBody().getMessage(), CARD_DTO, ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
         }
-        // check cardDto is not null
-        return null;
+
+        return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(),
+                bankRestResponseResponseEntity.getBody().getMessage());
     }
 
     @Override
     public GenericRestResponse getCardPinVerification(CardDto cardDto) throws BadRequestAlertException {
-        cardDto.setCardNumber(String.valueOf(httpSession.getAttribute("cardNumber")));
+        cardDto.setCardNumber(String.valueOf(httpSession.getAttribute(ConstantsUtil.SessionKey.CARD_NUMBER)));
         ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
                 bankServiceClient.validateCardPinNumber(cardDto);
         if (bankRestResponseResponseEntity.getBody().getStatus() == BankRestResponse.STATUS.FAILURE) {
@@ -69,10 +66,8 @@ public class AtmServiceImpl implements AtmService {
         try {
             ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
                     bankServiceClient.balanceManagement(accountRequestDto);
-//            httpSession.setAttribute("cardNUmber", card.getCardNumber());
             return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(), bankRestResponseResponseEntity.getBody().getMessage());
         } catch (Exception e) {
-//            httpSession.setAttribute("cardNUmber", "error");
         }
         return null;
 
