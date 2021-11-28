@@ -14,6 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Service Implementation for ATM-Service .
@@ -48,7 +52,8 @@ public class AtmServiceImpl implements AtmService {
             return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(),
                     bankRestResponseResponseEntity.getBody().getMessage());
         } catch (Exception e) {
-            return new GenericRestResponse(BankRestResponse.STATUS.FAILURE, e.getStackTrace().toString());
+            return new GenericRestResponse(BankRestResponse.STATUS.FAILURE,
+                    e.getMessage() != null ? e.getMessage() : e.getStackTrace().toString());
         }
     }
 
@@ -66,28 +71,47 @@ public class AtmServiceImpl implements AtmService {
     @Override
     public GenericRestResponse requestManagement(AccountRequestDto accountRequestDto) {
         try {
-            if (accountRequestDto.getRequestType() == null) {
-                throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_KEY);
-            }
-            if ((accountRequestDto.getRequestType().equals(RequestTypeEnum.WITHDRAW) ||
-                    accountRequestDto.getRequestType().equals(RequestTypeEnum.DEPOSIT)) &&
-                    accountRequestDto.getAmount() == null) {
-                throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.INVALID_AMOUNT_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.INVALID_AMOUNT_KEY);
-            }
-
-            if (accountRequestDto.getRequestType().equals(RequestTypeEnum.GET_RECEIPT) &&
-                    (accountRequestDto.getFromDate() == null ||
-                            accountRequestDto.getToDate() == null ||
-                            accountRequestDto.getFromDate().after(accountRequestDto.getToDate()))) {
-                throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.DATE_NOT_VALID_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.DATE_NOT_VALID_KEY);
-            }
-            accountRequestDto.setCardNumber(String.valueOf(httpSession.getAttribute(ConstantsUtil.SessionKey.CARD_NUMBER)));
+            requestInputValidation(accountRequestDto);
+            setInputValues(accountRequestDto);
 
             ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
                     bankServiceClient.requestManagement(accountRequestDto, httpSession.getAttribute(ConstantsUtil.SessionKey.JWT).toString());
             return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(), bankRestResponseResponseEntity.getBody().getMessage());
         } catch (Exception e) {
-            return new GenericRestResponse(BankRestResponse.STATUS.FAILURE, e.getStackTrace().toString());
+            return new GenericRestResponse(BankRestResponse.STATUS.FAILURE,
+                    e.getMessage() != null ? e.getMessage() : e.getStackTrace().toString());
+        }
+    }
+
+    private void requestInputValidation(AccountRequestDto accountRequestDto) throws BadRequestAlertException {
+        if (accountRequestDto.getRequestType() == null) {
+            throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_KEY);
+        }
+        if ((accountRequestDto.getRequestType().equals(RequestTypeEnum.WITHDRAW) ||
+                accountRequestDto.getRequestType().equals(RequestTypeEnum.DEPOSIT)) &&
+                accountRequestDto.getAmount() == null) {
+            throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.INVALID_AMOUNT_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.INVALID_AMOUNT_KEY);
+        }
+
+        if (accountRequestDto.getRequestType().equals(RequestTypeEnum.GET_RECEIPT) &&
+                (accountRequestDto.getFromDate() == null ||
+                        accountRequestDto.getToDate() == null ||
+                        accountRequestDto.getFromDate().after(accountRequestDto.getToDate()) ||
+                        accountRequestDto.getToDate().after(new Date()))) {
+            throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.DATE_NOT_VALID_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.DATE_NOT_VALID_KEY);
+        }
+    }
+
+    private void setInputValues(AccountRequestDto accountRequestDto) throws ParseException {
+        accountRequestDto.setCardNumber(String.valueOf(httpSession.getAttribute(ConstantsUtil.SessionKey.CARD_NUMBER)));
+
+        if (accountRequestDto.getRequestType().equals(RequestTypeEnum.GET_RECEIPT)) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/mm/dd");
+            accountRequestDto.setFromDate(simpleDateFormat.parse(simpleDateFormat.format(accountRequestDto.getFromDate())));
+            Calendar c = Calendar.getInstance();
+            c.setTime(accountRequestDto.getToDate());
+            c.add(Calendar.DATE, 1);
+            accountRequestDto.setToDate(c.getTime());
         }
     }
 }
