@@ -32,5 +32,12 @@ public final class ErrorConstants {
         public static final String NOT_ENOUGH_BALANCE_MSG = "Your Balance is Less Than the RequestedAmount";
     }
 
-
+    public static class ReceiptMessage {
+        public static final String DATE_NOT_VALID_KEY = "dateNotValid";
+        public static final String DATE_NOT_VALID_MSG = "Entered Date is Not Valid";
+        public static final String INVALID_AMOUNT_KEY = "amountNotValid";
+        public static final String INVALID_AMOUNT_MSG = "Amount is Not valid";
+        public static final String INVALID_REQ_TYPE_KEY = "notValidReqType";
+        public static final String INVALID_REQ_TYPE_MSG = "Request Type is Not valid";
+    }
 }

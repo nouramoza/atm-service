@@ -7,6 +7,7 @@ public final class ConstantsUtil {
 
     public static class SessionKey {
         public static final String CARD_NUMBER = "cardNumber";
+        public static final String JWT = "jwt";
         public static final String ERROR = "error";
     }
 

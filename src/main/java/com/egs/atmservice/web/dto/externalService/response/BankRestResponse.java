@@ -7,7 +7,7 @@ public class BankRestResponse<T> {
         int FAILURE = 1;
     }
 
-    public BankRestResponse(){
+    public BankRestResponse() {
 
     }
 

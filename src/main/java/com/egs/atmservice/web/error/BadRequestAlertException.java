@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BadRequestAlertException extends Exception{
+public class BadRequestAlertException extends Exception {
 
     private final String entityName;
 
@@ -27,6 +27,4 @@ public class BadRequestAlertException extends Exception{
         parameters.put("params", entityName);
         return parameters;
     }
-
-
 }

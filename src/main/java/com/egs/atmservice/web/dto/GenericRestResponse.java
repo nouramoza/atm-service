@@ -1,13 +1,13 @@
 package com.egs.atmservice.web.dto;
 
-public class GenericRestResponse<T>{
+public class GenericRestResponse<T> {
 
     public interface STATUS {
         int SUCCESS = 0;
         int FAILURE = 1;
     }
 
-    public GenericRestResponse(){
+    public GenericRestResponse() {
 
     }
 
