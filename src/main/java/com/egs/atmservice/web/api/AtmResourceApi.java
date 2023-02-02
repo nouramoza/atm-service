@@ -1,4 +1,4 @@
-package com.egs.atmservice.web.controller;
+package com.egs.atmservice.web.api;
 
 import com.egs.atmservice.service.AtmService;
 import com.egs.atmservice.web.dto.AccountRequestDto;
@@ -17,12 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/atm-service")
 @Api(value = "ATM Emulator API")
-public class AtmServiceController {
+public class AtmResourceApi {
 
-    Logger log = LoggerFactory.getLogger(AtmServiceController.class);
+    Logger log = LoggerFactory.getLogger(AtmResourceApi.class);
     private AtmService atmService;
 
-    public AtmServiceController(AtmService atmService) {
+    public AtmResourceApi(AtmService atmService) {
         this.atmService = atmService;
     }
 
@@ -35,7 +35,7 @@ public class AtmServiceController {
             @ApiParam(value = "CardDto Number", required = true)
             @RequestBody CardDto cardDto,
             @RequestHeader HttpHeaders httpHeaders) {
-        log.debug("REST request to Verify CardDto");
+        log.info("REST request to Verify CardDto");
         return atmService.getCardVerification(httpHeaders, cardDto);
     }
 
