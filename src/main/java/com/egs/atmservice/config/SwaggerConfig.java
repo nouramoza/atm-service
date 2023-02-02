@@ -30,14 +30,13 @@ class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        ApiInfo apiInfo = new ApiInfo("ATM API",
+        return new ApiInfo("ATM API",
             "BANKING",
             "1.0",
             "Term of service",
             new Contact("ATM_SERVICE Support Team ", "http://egs.com", "support@egs.com"),
             "",
-            "http://egs.com", new ArrayList());
-        return apiInfo;
+            "http://egs.com", new ArrayList<>());
     }
 
     private ApiKey apiKey() {

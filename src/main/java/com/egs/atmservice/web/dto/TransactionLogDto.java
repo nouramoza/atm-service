@@ -19,5 +19,5 @@ public class TransactionLogDto {
     private String response;
     private int status;
     private Date requestDate;
-    public String description;
+    private String description;
 }

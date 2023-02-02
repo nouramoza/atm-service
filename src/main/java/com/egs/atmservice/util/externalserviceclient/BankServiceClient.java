@@ -2,7 +2,7 @@ package com.egs.atmservice.util.externalserviceclient;
 
 import com.egs.atmservice.web.dto.AccountRequestDto;
 import com.egs.atmservice.web.dto.CardDto;
-import com.egs.atmservice.web.dto.externalService.response.BankRestResponse;
+import com.egs.atmservice.web.dto.external.response.BankRestResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,7 +69,6 @@ public class BankServiceClient {
         } catch (RestClientException e) {
             Throwable cause = e.getMostSpecificCause();
             log.warn("Error while GET `{}`. error: '{}', desc: '{}'", requestPath, cause.getClass().getName(), cause.getMessage());
-            System.out.println(e);
             throw e;
         }
     }

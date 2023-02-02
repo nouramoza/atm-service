@@ -8,7 +8,7 @@ import com.egs.atmservice.util.externalserviceclient.BankServiceClient;
 import com.egs.atmservice.web.dto.AccountRequestDto;
 import com.egs.atmservice.web.dto.CardDto;
 import com.egs.atmservice.web.dto.GenericRestResponse;
-import com.egs.atmservice.web.dto.externalService.response.BankRestResponse;
+import com.egs.atmservice.web.dto.external.response.BankRestResponse;
 import com.egs.atmservice.web.error.BadRequestAlertException;
 import com.egs.atmservice.web.error.ErrorConstants;
 import org.springframework.http.HttpHeaders;
@@ -87,9 +87,6 @@ public class AtmServiceImpl implements AtmService {
     }
 
     private void requestInputValidation(AccountRequestDto accountRequestDto) throws BadRequestAlertException {
-        if (accountRequestDto.getRequestType() == null) {
-            throw new BadRequestAlertException(ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_MSG, CARD_DTO, ErrorConstants.ReceiptMessage.INVALID_REQ_TYPE_KEY);
-        }
         if ((accountRequestDto.getRequestType().equals(RequestTypeEnum.WITHDRAW) ||
                 accountRequestDto.getRequestType().equals(RequestTypeEnum.DEPOSIT)) &&
                 accountRequestDto.getAmount() == null) {

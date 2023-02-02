@@ -43,11 +43,7 @@ class AtmserviceApplicationTests {
     private static final URI REQUEST_MANAGEMENT_URI = URI.create("/api/v1/atm-service/requestManagement");
 
     @Test
-    void contextLoads() {
-    }
-
-    @Test
-    public void notValidCardVerification() throws Exception {
+    void notValidCardVerification() throws Exception {
         CardDto cardDto = new CardDto();
         cardDto.setCardNumber("432432");
         String cardStr = mapToJson(cardDto);
@@ -65,7 +61,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void validCardVerification() throws Exception {
+    void validCardVerification() throws Exception {
         CardDto cardDto = new CardDto();
         cardDto.setCardNumber("6280231451904303");
         String cardStr = mapToJson(cardDto);
@@ -83,7 +79,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void inActiveCardVerification() throws Exception {
+    void inActiveCardVerification() throws Exception {
         CardDto cardDto = new CardDto();
         cardDto.setCardNumber("6280231451904304");
         String cardStr = mapToJson(cardDto);
@@ -101,7 +97,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void expiredCardVerification() throws Exception {
+    void expiredCardVerification() throws Exception {
         CardDto cardDto = new CardDto();
         cardDto.setCardNumber("6280231451904305");
         String cardStr = mapToJson(cardDto);
@@ -119,7 +115,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void correctPinVerification() throws Exception {
+    void correctPinVerification() throws Exception {
         httpSession.setAttribute(ConstantsUtil.SessionKey.CARD_NUMBER, "6280231451904303");
         CardDto cardDto = new CardDto();
         cardDto.setPin("1234");
@@ -138,7 +134,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void incorrectPinVerification() throws Exception {
+    void incorrectPinVerification() throws Exception {
         CardDto cardDto = new CardDto();
         cardDto.setCardNumber("6280231451904303");
         cardDto.setPin("123");
@@ -157,7 +153,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void checkBalance() throws Exception {
+    void checkBalance() throws Exception {
         AccountRequestDto accountRequestDto = new AccountRequestDto();
         accountRequestDto.setRequestType(RequestTypeEnum.CHECK_BALANCE);
 
@@ -176,7 +172,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void deposit() throws Exception {
+    void deposit() throws Exception {
         AccountRequestDto accountRequestDto = new AccountRequestDto();
         accountRequestDto.setRequestType(RequestTypeEnum.DEPOSIT);
         accountRequestDto.setAmount(200L);
@@ -207,7 +203,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void withdraw() throws Exception {
+    void withdraw() throws Exception {
         AccountRequestDto accountRequestDto = new AccountRequestDto();
         accountRequestDto.setRequestType(RequestTypeEnum.WITHDRAW);
         accountRequestDto.setAmount(200L);
@@ -237,7 +233,7 @@ class AtmserviceApplicationTests {
     }
 
     @Test
-    public void withdrawNotEnough() throws Exception {
+    void withdrawNotEnough() throws Exception {
         AccountRequestDto accountRequestDto = new AccountRequestDto();
         accountRequestDto.setRequestType(RequestTypeEnum.WITHDRAW);
         accountRequestDto.setAmount(22200L);

@@ -52,7 +52,7 @@ public class GenericRestResponse<T> {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("GenericRestResponse{");
+        final StringBuilder sb = new StringBuilder("GenericRestResponse{");
         sb.append("data=").append(data);
         sb.append(", message='").append(message).append('\'');
         sb.append(", status=").append(status);

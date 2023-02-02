@@ -1,4 +1,4 @@
-package com.egs.atmservice.web.dto.externalService.response;
+package com.egs.atmservice.web.dto.external.response;
 
 public class BankRestResponse<T> {
 
@@ -52,7 +52,7 @@ public class BankRestResponse<T> {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("BankRestResponse");
+        final StringBuilder sb = new StringBuilder("BankRestResponse");
         sb.append("data=").append(data);
         sb.append(", message='").append(message).append('\'');
         sb.append(", status=").append(status);

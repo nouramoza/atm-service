@@ -13,15 +13,14 @@ import java.util.Date;
 @Getter
 @Setter
 public class CardDto {
+    private String cardNumber;
+    private int cvv2;
+    private Date expireDate;
+    private String pin;
+    private String accountNumber;
+    private Boolean isActive;
 
     public CardDto(String cardNumber) {
         this.cardNumber = cardNumber;
     }
-
-    public String cardNumber;
-    public int cvv2;
-    public Date expireDate;
-    public String pin;
-    private String accountNumber;
-    private Boolean isActive;
 }

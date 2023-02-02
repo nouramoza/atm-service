@@ -13,15 +13,15 @@ import java.util.Date;
 public class AccountRequestDto {
 
     @NonNull
-    public RequestTypeEnum requestType;
+    private RequestTypeEnum requestType;
 
-    public String cardNumber;
+    private String cardNumber;
 
-    public String description;
+    private String description;
 
-    public Long amount;
+    private Long amount;
 
-    public Date fromDate;
+    private Date fromDate;
 
-    public Date toDate;
+    private Date toDate;
 }
