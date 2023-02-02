@@ -1,4 +1,4 @@
-package com.egs.atmservice.web.controller;
+package com.egs.atmservice.web.error;
 
 import com.egs.atmservice.web.error.BadRequestAlertException;
 import org.springframework.http.HttpStatus;

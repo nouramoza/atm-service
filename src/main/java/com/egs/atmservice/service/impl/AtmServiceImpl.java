@@ -3,19 +3,22 @@ package com.egs.atmservice.service.impl;
 import com.egs.atmservice.enums.RequestTypeEnum;
 import com.egs.atmservice.service.AtmService;
 import com.egs.atmservice.util.ConstantsUtil;
-import com.egs.atmservice.util.externalServiceClient.BankServiceClient;
+import com.egs.atmservice.util.ObjectMapperUtils;
+import com.egs.atmservice.util.externalserviceclient.BankServiceClient;
 import com.egs.atmservice.web.dto.AccountRequestDto;
 import com.egs.atmservice.web.dto.CardDto;
 import com.egs.atmservice.web.dto.GenericRestResponse;
 import com.egs.atmservice.web.dto.externalService.response.BankRestResponse;
 import com.egs.atmservice.web.error.BadRequestAlertException;
 import com.egs.atmservice.web.error.ErrorConstants;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,18 +45,18 @@ public class AtmServiceImpl implements AtmService {
      * @return GenericRestResponse Bank Service response
      */
     @Override
-    public GenericRestResponse getCardVerification(CardDto cardDto) {
+    public GenericRestResponse<CardDto> getCardVerification(HttpHeaders httpHeaders, CardDto cardDto) {
 
         try {
-            httpSession.setAttribute(ConstantsUtil.SessionKey.JWT, bankServiceClient.loginToBankService());
+            httpSession.setAttribute(ConstantsUtil.SessionKey.JWT, bankServiceClient.loginToBankService(httpHeaders));
             ResponseEntity<BankRestResponse> bankRestResponseResponseEntity =
                     bankServiceClient.validateCardNumber(cardDto.getCardNumber(), httpSession.getAttribute(ConstantsUtil.SessionKey.JWT).toString());
             httpSession.setAttribute(ConstantsUtil.SessionKey.CARD_NUMBER, cardDto.getCardNumber());
-            return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(),
-                    bankRestResponseResponseEntity.getBody().getMessage());
+            return new GenericRestResponse<>(bankRestResponseResponseEntity.getStatusCodeValue(),
+                    bankRestResponseResponseEntity.getBody().getMessage(), ObjectMapperUtils.map(bankRestResponseResponseEntity.getBody().getData(), CardDto.class));
         } catch (Exception e) {
-            return new GenericRestResponse(BankRestResponse.STATUS.FAILURE,
-                    e.getMessage() != null ? e.getMessage() : e.getStackTrace().toString());
+            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE,
+                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -79,7 +82,7 @@ public class AtmServiceImpl implements AtmService {
             return new GenericRestResponse(bankRestResponseResponseEntity.getStatusCodeValue(), bankRestResponseResponseEntity.getBody().getMessage());
         } catch (Exception e) {
             return new GenericRestResponse(BankRestResponse.STATUS.FAILURE,
-                    e.getMessage() != null ? e.getMessage() : e.getStackTrace().toString());
+                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
         }
     }
 

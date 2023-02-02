@@ -6,17 +6,16 @@ import com.egs.atmservice.web.dto.CardDto;
 import com.egs.atmservice.web.dto.GenericRestResponse;
 import com.egs.atmservice.web.error.BadRequestAlertException;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/atm-service")
+@RequestMapping("/atm-service")
 @Api(value = "ATM Emulator API")
 public class AtmServiceController {
 
@@ -30,11 +29,14 @@ public class AtmServiceController {
     @PostMapping("/cardVerification")
     @ApiOperation(value = "REST request to Verify CardDto",
             produces = "Application/JSON", response = CardDto.class, httpMethod = "POST")
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true,
+            allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     public GenericRestResponse cardVerification(
             @ApiParam(value = "CardDto Number", required = true)
-            @RequestBody CardDto cardDto) {
+            @RequestBody CardDto cardDto,
+            @RequestHeader HttpHeaders httpHeaders) {
         log.debug("REST request to Verify CardDto");
-        return atmService.getCardVerification(cardDto);
+        return atmService.getCardVerification(httpHeaders, cardDto);
     }
 
     @PostMapping("/cardPinVerification")

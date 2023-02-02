@@ -68,11 +68,11 @@ ALTER TABLE public.card
 -- CARD DATA INSERTION	
 INSERT INTO public.card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count)
-    VALUES (1, 6280231451904303, 199, '2022/11/11', true, 1233, 1, 0);
+    VALUES (1, 6280231451904303, 199, '2023/11/11', true, 1233, 1, 0);
 
 INSERT INTO public.card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count)
-    VALUES (2, 628023145234765, 342, '2022/11/11', false, 1111, 2, 0);
+    VALUES (2, 628023145234765, 342, '2023/11/11', false, 1111, 2, 0);
 
 INSERT INTO public.card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count)
@@ -80,4 +80,4 @@ INSERT INTO public.card(
 
 INSERT INTO public.card(
             id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count)
-    VALUES (4, 6280231476123412, 239, '2022/11/11', true, 1233, 1, 0);
+    VALUES (4, 6280231476123412, 239, '2023/11/11', true, 1233, 1, 0);

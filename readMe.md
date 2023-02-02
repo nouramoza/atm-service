@@ -3,7 +3,7 @@ This is The Implementation of ATM-Emulator
 for starting project please follow the steps:
 
 1- make a database in Postgres named "ATM-EMULATOR" 
-2- Run the file "table_data.sql"
+2- Run the file "data.sql"
 3- go to atm-emulator\bankservice\src\main\resources 
 4- open application.properties file 
 5- update the postgres url, username, and password 

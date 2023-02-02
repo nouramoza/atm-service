@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
 import java.util.Date;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CardDto implements Serializable {
+public class CardDto {
 
     public CardDto(String cardNumber) {
         this.cardNumber = cardNumber;
