@@ -17,6 +17,7 @@ public final class ErrorConstants {
     public static class CardVerificationMessage {
         public static final String CARD_NOT_VALID_KEY = "cardNotValid";
         public static final String CARD_NOT_VALID_MSG = "This Card Number Is Not Valid.";
+        public static final String EXCEPTION = "Common Exception";
         public static final String CARD_NOT_FOUND_MSG = "Card Number Is Not Found.";
         public static final String WRONG_PIN_KEY = "wrongPin";
         public static final String WRONG_PIN_MSG = "Pin Number Is Wrong";

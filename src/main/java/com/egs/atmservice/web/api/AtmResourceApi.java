@@ -26,9 +26,9 @@ public class AtmResourceApi {
         this.atmService = atmService;
     }
 
-    @PostMapping("/cardVerification")
+    @GetMapping("/cardVerification")
     @ApiOperation(value = "REST request to Verify CardDto",
-            produces = "Application/JSON", response = CardDto.class, httpMethod = "POST")
+            produces = "Application/JSON", response = CardDto.class, httpMethod = "GET")
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true,
             allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     public GenericRestResponse cardVerification(

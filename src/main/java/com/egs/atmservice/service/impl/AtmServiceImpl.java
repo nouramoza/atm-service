@@ -13,6 +13,8 @@ import com.egs.atmservice.web.dto.external.response.BankRestResponse;
 import com.egs.atmservice.web.error.BadRequestAlertException;
 import com.egs.atmservice.web.error.CardNotFoundException;
 import com.egs.atmservice.web.error.ErrorConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ import java.util.Objects;
 
 @Service
 public class AtmServiceImpl implements AtmService {
+    Logger log = LoggerFactory.getLogger(AtmServiceImpl.class);
     private static final String CARD_DTO = "cardDto";
 
     BankServiceClient bankServiceClient;
@@ -60,32 +63,17 @@ public class AtmServiceImpl implements AtmService {
             BankRestResponse body = getBodyFromBankResponse(bankRestResponseResponseEntity);
             CardDto resultCardDto = getCardFromBankResponse(body);
 
+            log.error("Response: {}, for cardNumber: {}, ResultDto: {}", body.getMessage(), resultCardDto.getCardNumber(), resultCardDto);
             return new GenericRestResponse<>(body.getStatus(), body.getMessage(), ObjectMapperUtils.map(resultCardDto, CardDto.class));
         } catch (CardNotFoundException e) {
-            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage());
+            log.error("Response: {}, for cardNumber: {}, Cause: {}", ErrorConstants.CardVerificationMessage.CARD_NOT_FOUND_MSG, cardDto.getCardNumber(), e.getMessage());
+            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage(), cardDto);
         } catch (Exception e) {
+            log.error("Response: {}, for cardNumber: {}, Cause: {}", ErrorConstants.CardVerificationMessage.EXCEPTION, cardDto.getCardNumber(), e.getMessage());
             return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE,
-                    e.getCause() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
+                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()), cardDto);
         }
     }
-
-    private BankRestResponse<Object> getBodyFromBankResponse(ResponseEntity<BankRestResponse> bankRestResponseResponseEntity) throws CardNotFoundException {
-        BankRestResponse<Object> body = bankRestResponseResponseEntity.getBody();
-        if (body == null) {
-            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
-                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
-        }
-        return body;
-    }
-    private CardDto getCardFromBankResponse(BankRestResponse body) throws CardNotFoundException {
-        CardDto data = ObjectMapperUtils.map(body.getData(), CardDto.class);
-        if (data == null) {
-            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
-                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
-        }
-        return data;
-    }
-
     @Override
     public GenericRestResponse getCardPinVerification(CardDto cardDto) throws BadRequestAlertException {
         try {
@@ -106,10 +94,12 @@ public class AtmServiceImpl implements AtmService {
             return new GenericRestResponse<>(body.getStatus(), body.getMessage(), resultCardDto);
 
         } catch (CardNotFoundException e) {
-            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage());
+            log.error(e.getMessage());
+            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage(), cardDto);
         } catch (Exception e) {
+            log.error(e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
             return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE,
-                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
+                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()), cardDto);
         }
     }
 
@@ -129,14 +119,39 @@ public class AtmServiceImpl implements AtmService {
                     bankServiceClient.requestManagement(accountRequestDto, httpSession.getAttribute(ConstantsUtil.SessionKey.JWT).toString());
             BankRestResponse body = getBodyFromBankResponse(bankRestResponseResponseEntity);
             AccountDto resultAccountDto = getAccountFromBankResponse(body);
-
             return new GenericRestResponse<>(body.getStatus(), body.getMessage(), resultAccountDto);
         } catch (CardNotFoundException e) {
-            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage());
+            log.error(e.getMessage());
+            return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE, e.getMessage(), accountRequestDto);
         } catch (Exception e) {
+            log.error(e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
             return new GenericRestResponse<>(BankRestResponse.STATUS.FAILURE,
-                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()));
+                    e.getMessage() != null ? e.getMessage() : Arrays.toString(e.getStackTrace()), accountRequestDto);
         }
+    }
+
+    private BankRestResponse getBodyFromBankResponse(ResponseEntity<BankRestResponse> bankRestResponseResponseEntity) throws CardNotFoundException {
+        BankRestResponse body = bankRestResponseResponseEntity.getBody();
+        if (body == null) {
+            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
+                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
+        }
+        return body;
+    }
+    private CardDto getCardFromBankResponse(BankRestResponse body) throws CardNotFoundException {
+        if (body.getData() == null) {
+            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
+                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
+        }
+        return ObjectMapperUtils.map(body.getData(), CardDto.class);
+    }
+
+    private AccountDto getAccountFromBankResponse(BankRestResponse body) throws CardNotFoundException {
+        if (body.getData() == null) {
+            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
+                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
+        }
+        return ObjectMapperUtils.map(body.getData(), AccountDto.class);
     }
 
     private void requestInputValidation(AccountRequestDto accountRequestDto) throws BadRequestAlertException {
@@ -168,12 +183,5 @@ public class AtmServiceImpl implements AtmService {
         }
     }
 
-    private AccountDto getAccountFromBankResponse(BankRestResponse body) throws CardNotFoundException {
-        AccountDto data = ObjectMapperUtils.map(body.getData(), AccountDto.class);
-        if (data == null) {
-            throw new CardNotFoundException(ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_MSG,
-                    "Card", ErrorConstants.CardVerificationMessage.CARD_NOT_VALID_KEY);
-        }
-        return data;
-    }
+
 }
