@@ -1,10 +1,12 @@
 package com.egs.atmservice.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -12,7 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-public class CardDto {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class CardDto implements Serializable {
     private String cardNumber;
     private int cvv2;
     private Date expireDate;
