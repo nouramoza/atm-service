@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "56ae6cd3-cfe7-44ec-bab1-2e835c7e5af6",
+		"name": "bank service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add account",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"accountNumber\" : \"23656325\",\r\n\"personId\" : 1,\r\n\"balance\" : 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8030/bank-service/api/v1/basic-info/addAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8030",
+					"path": [
+						"bank-service",
+						"api",
+						"v1",
+						"basic-info",
+						"addAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add card",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"cardNumber\" : 6280231451904303,\r\n\"personId\" : 1,\r\n\"balance\" : 500\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8030/bank-service/api/v1/basic-info/addAccount",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8030",
+					"path": [
+						"bank-service",
+						"api",
+						"v1",
+						"basic-info",
+						"addAccount"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "activate card",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8030/bank-service/api/v1/basic-info/activeCard",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8030",
+					"path": [
+						"bank-service",
+						"api",
+						"v1",
+						"basic-info",
+						"activeCard"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

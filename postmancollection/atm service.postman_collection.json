@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "88d0a226-bee6-47a6-ab6f-58d50b61e034",
+		"name": "atm service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "cardVerification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\"cardNumber\" : 6280231451904303\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/cardVerification",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"cardVerification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "card pin Verification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"pin\": 1233\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/cardPinVerification",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"cardPinVerification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get balance req",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"requestType\": \"CHECK_BALANCE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/requestManagement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"requestManagement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deposit req",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"requestType\": \"DEPOSIT\",\r\n    \"amount\" : 1400\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/requestManagement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"requestManagement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "withdraw req",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"requestType\": \"WITHDRAW\",\r\n    \"amount\" : 300\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/requestManagement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"requestManagement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "transaction req",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					},
+					{
+						"key": "Authorization",
+						"value": "Basic YXRtOmF0bQ==",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"requestType\":\"GET_RECEIPT\",\r\n\t\"fromDate\":\"2023-02-01\",\r\n\t\"toDate\":\"2023-02-15\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8040/atm-service/api/v1/atm-service/requestManagement",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8040",
+					"path": [
+						"atm-service",
+						"api",
+						"v1",
+						"atm-service",
+						"requestManagement"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

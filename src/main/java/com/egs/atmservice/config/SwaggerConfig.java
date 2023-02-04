@@ -24,19 +24,19 @@ class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2).select()
-            .apis(RequestHandlerSelectors.any())
-            .paths(PathSelectors.regex("/api/.*"))
-            .build();
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.regex("/atm-service/.*"))
+                .build();
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfo("ATM API",
-            "BANKING",
-            "1.0",
-            "Term of service",
-            new Contact("ATM_SERVICE Support Team ", "http://egs.com", "support@egs.com"),
-            "",
-            "http://egs.com", new ArrayList<>());
+                "BANKING",
+                "1.0",
+                "Term of service",
+                new Contact("ATM_SERVICE Support Team ", "http://egs.com", "support@egs.com"),
+                "",
+                "http://egs.com", new ArrayList<>());
     }
 
     private ApiKey apiKey() {
@@ -45,6 +45,6 @@ class SwaggerConfig {
 
     private Predicate<String> paths() {
         return or(
-            regex("/api/*.*"));
+                regex("/api/*.*"));
     }
 }
