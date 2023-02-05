@@ -95,7 +95,7 @@
 		{
 			"name": "activate card",
 			"request": {
-				"method": "POST",
+				"method": "PUT",
 				"header": [
 					{
 						"key": "Content-Type",
@@ -119,7 +119,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8030/bank-service/api/v1/basic-info/activeCard",
+					"raw": "http://localhost:8030/bank-service/api/v1/basic-info/activeCard/6280231451904303",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -130,7 +130,8 @@
 						"api",
 						"v1",
 						"basic-info",
-						"activeCard"
+						"activeCard",
+						"6280231451904303"
 					]
 				}
 			},

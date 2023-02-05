@@ -19,7 +19,7 @@ INSERT INTO public.card(
 VALUES (201, 6280231451904303, 199, '2023/11/11', true, 1233, 101, 0, '2021/11/11');
 INSERT INTO public.card(
     id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count, issue_date)
-VALUES (202, 628023145234765, 342, '2022/11/11', false, 1111, 102, 0, '2021/11/11');
+VALUES (202, 628023145234765, 342, '2023/11/11', false, 1111, 102, 0, '2021/11/11');
 
 INSERT INTO public.card(
     id, card_number, cvv2, expire_date, is_active, pin, account_id, incorrect_pin_count, issue_date)
